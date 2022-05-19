@@ -1,0 +1,33 @@
+variables:
+  SERVICE_NAME: "api"
+  SERVICE_NAME_DEV: "api-dev"
+
+deploy:dev:
+  image: google/cloud-sdk:latest
+  stage: deploy
+  environment: development
+  script:
+    - echo $DEPLOY_KEY_FILE > gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud auth configure-docker
+    - gcloud config set project $PROJECT_ID
+    - gcloud builds submit --tag gcr.io/$PROJECT_ID/$SERVICE_NAME_DEV
+    - gcloud run deploy $SERVICE_NAME_DEV --image gcr.io/$PROJECT_ID/$SERVICE_NAME_DEV --set-env-vars ENV=development --min-instances 1 --region=europe-west1 --platform managed --allow-unauthenticated
+  only:
+    - dev
+
+deploy:prod:
+  image: google/cloud-sdk:latest
+  stage: deploy
+  environment: production
+  when: manual
+  script:
+    - echo $DEPLOY_KEY_FILE > gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud auth configure-docker
+    - gcloud config set project $PROJECT_ID
+    - gcloud builds submit --tag gcr.io/$PROJECT_ID/$SERVICE_NAME
+    - gcloud run deploy $SERVICE_NAME --image gcr.io/$PROJECT_ID/$SERVICE_NAME --set-env-vars ENV=production --min-instances 1 --region=europe-west1 --platform managed --allow-unauthenticated
+  only:
+    - dev
+    - master
