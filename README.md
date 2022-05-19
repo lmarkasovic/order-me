@@ -1,8 +1,8 @@
 [![Moleculer](https://badgen.net/badge/Powered%20by/Moleculer/0e83cd)](https://moleculer.services)
 
-# my-project
+# order-me
 Sample dish ordering app.
-Every customer can order dishes for one or more linked customers. Each customer can add allergens and be notified which dishes have specified allergens.
+Every user can order dishes for one or more linked customers. Each customer can add allergens and be notified which dishes have specified allergens.
 Admin can define menu (offers) and eligible dates, add and delete dishes, dish allergens, tags...
 
 This is a [Moleculer](https://moleculer.services/)-based microservices project. Generated with the [Moleculer CLI](https://moleculer.services/docs/0.14/moleculer-cli.html).
@@ -20,8 +20,12 @@ In the terminal, try the following commands:
 
 ## Services
 - **APIGateway**: API Gateway services
-- **Auth**: Sample service with `hello` and `welcome` actions.
-- **products**: Sample DB service. To use with MongoDB, set `MONGO_URI` environment variables and install MongoDB adapter with `npm i moleculer-db-adapter-mongo`.
+- **Auth**: Token-based auth service.
+- **customers**: CRUD service for customers
+- **dish**: CRUD service for dishes
+- **offer**: CRUD service for menus
+- **order**: CRUD service for user orders
+- **user**: CRUD service for app users.
 
 ## Mixins
 - **db.mixin**: Database access mixin for services. Based on [moleculer-db](https://github.com/moleculerjs/moleculer-db#readme)
